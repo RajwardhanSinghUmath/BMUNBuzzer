@@ -24,10 +24,10 @@ export default function Home() {
     if (savedName) {setName(savedName);}
   }, []);
 
-  function saveName() {
-    if (!name.trim()) return;
-    localStorage.setItem("buzzer_name", name.trim());
-    router.replace("/user");
+    function saveName() {
+      if (!name.trim()) return;
+      localStorage.setItem("buzzer_name", name.trim());
+      router.replace("/user");
 
   }
 
@@ -42,7 +42,7 @@ export default function Home() {
             className="object-contain scale-120 lg:scale-135 xl:scale-150 mask-[linear-gradient(to_bottom,rgba(0,0,0,0.1)_50%,rgba(0,0,0,0.5)_100%)]" 
           />
         </div>
-        <div className="flex justify-center max-[500px]:pt-6 pt-12 md:pt-10 lg:pt-6">
+        <div className="flex justify-center max-[280px]:pt-3 max-[500px]:pt-6 pt-12 md:pt-10 lg:pt-6">
           <Image 
             src="/bclub_logo.png" 
             alt="BMUN Logo" 
@@ -57,9 +57,9 @@ export default function Home() {
             Welcome to <span className="font-extrabold bg-linear-to-b from-white to-[#5a7d9a] bg-clip-text text-transparent drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]">BMUN</span>
           </h1>
         </div>
-        <div className="flex gap-4  bg-white/5 border border-[#5a7d9a]/30 text-white font-mono justify-center items-center transition-all shadow-lg rounded-lg max-[500px]:mb-33 mb-37 sm:mb-35 lg:mb-30 xl:mb-26 text-xs sm:text-sm lg:text-base px-2 md:px-4 lg:px-5 py-1.5 lg:py-2 xl:py-2.5 mr-2 ">
+        <div className="flex gap-4 max-w-full bg-white/5 border border-[#5a7d9a]/30 text-white font-mono justify-center items-center transition-all shadow-lg rounded-lg max-[280px]:mb-26 max-[500px]:mb-33 mb-37 sm:mb-35 lg:mb-30 xl:mb-26 text-sm lg:text-base px-2 md:px-4 lg:px-5 py-2 xl:py-2.5 ">
           <input placeholder="What shall we call you?" autoFocus onChange={(e) => setName(e.target.value)} value={name}
-            className=" font-bold focus:outline-none"/>
+            className=" font-bold focus:outline-none min-w-0 w-full"/>
           <button className="p-2 -m-2 " onClick={saveName}>
             <CheckIcon className="h-5 w-5 sm:h-6 sm:w-6"/>
           </button>

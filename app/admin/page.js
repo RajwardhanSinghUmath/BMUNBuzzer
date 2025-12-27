@@ -6,19 +6,28 @@ import Image from "next/image";
 
 export default function AdminPage() {
   const [queue, setQueue] = useState([]);
+  // const [buzzer_sound, setBuzzerSound] = useState(null);
+  // const buzzer_sound = typeof Audio !== undefined ? new Audio("/buzzer.mp3"):null;
 
   // Load queue from Supabase
-  async function loadQueue() {
+  async function loadQueue(buzzer_sound) {
+    const prev_length = queue.length;
     const { data } = await supabase
       .from("buzz_queue")
       .select("*")
       .order("timestamp", { ascending: true });
 
+    if (data.length > prev_length) {
+      buzzer_sound?.play().catch(err => console.error("Unable to play ", err));
+    }
     setQueue(data || []);
   }
 
   useEffect(() => {
-    loadQueue();
+    const audio = new Audio("/final_buzzer.mp3");
+    // setBuzzerSound(audio);
+    audio.preload = "auto"
+    loadQueue(audio);
 
     // Realtime subscription
     const channel = supabase
@@ -26,7 +35,7 @@ export default function AdminPage() {
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "buzz_queue" },
-        () => loadQueue()
+        () => loadQueue(audio)
       )
       .subscribe();
 
@@ -50,8 +59,8 @@ export default function AdminPage() {
         <Image 
           src="/bclub_logo.png" 
           alt="BMUN Logo" 
-          width={100} 
-          height={100} 
+          width={80} 
+          height={80} 
           className="relative z-20 "
         />
       </div>
