@@ -1,65 +1,70 @@
+"use client"
 import Image from "next/image";
+import { CheckIcon } from '@heroicons/react/24/solid';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { generateUserId } from "@/lib/generateId";
 
 export default function Home() {
+  //from-[#1a4b8c] via-[#0d2a52] to-black
+
+  const [name, setName] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    // ensure userId exists (same logic everywhere)
+    let id = localStorage.getItem("buzzer_user_id");
+    if (!id) {
+      id = generateUserId();
+      localStorage.setItem("buzzer_user_id", id);
+    }
+
+    // preload name if already saved
+    const savedName = localStorage.getItem("buzzer_name");
+    if (savedName) {setName(savedName);}
+  }, []);
+
+  function saveName() {
+    if (!name.trim()) return;
+    localStorage.setItem("buzzer_name", name.trim());
+    router.replace("/user");
+
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
+    <div className=" flex h-screen w-full items-center justify-center overflow-hidden bg-linear-to-b from-[#5a7d9a] via-[#0a3d62] to-[#001530]">
+      <div className="relative z-10 flex flex-col justify-between items-center w-[90%] md:w-[85%] lg:w-[80%] xl:w-[75%] h-3/4 rounded-[40px] border  border-white/10 bg-white/5 p-12 backdrop-blur-md shadow-2xl mx-4">
+        <div className="absolute hidden -z-10 md:flex items-center justify-center inset-0 overflow-hidden">
+          <Image 
+            src="/un.png" 
+            alt="UN_emblem" 
+            fill
+            className="object-contain scale-120 lg:scale-135 xl:scale-150 mask-[linear-gradient(to_bottom,rgba(0,0,0,0.1)_50%,rgba(0,0,0,0.5)_100%)]" 
+          />
+        </div>
+        <div className="flex justify-center max-[500px]:pt-6 pt-12 md:pt-10 lg:pt-6">
+          <Image 
+            src="/bclub_logo.png" 
+            alt="BMUN Logo" 
+            width={120} 
+            height={120} 
+            className="relative z-20 "
+          />
+        </div>
+        <div id="main-title" className="absolute inset-0 px-4 pointer-events-none flex justify-center flex-col items-center text-center ">
+          <p className="text-xs sm:text-sm md:text-lg font-mono tracking-widest text-white text-shaodw-lg ">BUSINESS CLUB</p>
+          <h1 className=" text-5xl sm:text-6xl lg:text-7xl xl:text-8xl text-white mb-8 tracking-tight text-center font-opensans drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]">
+            Welcome to <span className="font-extrabold bg-linear-to-b from-white to-[#5a7d9a] bg-clip-text text-transparent drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]">BMUN</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="flex gap-4  bg-white/5 border border-[#5a7d9a]/30 text-white font-mono justify-center items-center transition-all shadow-lg rounded-lg max-[500px]:mb-33 mb-37 sm:mb-35 lg:mb-30 xl:mb-26 text-xs sm:text-sm lg:text-base px-2 md:px-4 lg:px-5 py-1.5 lg:py-2 xl:py-2.5 mr-2 ">
+          <input placeholder="What shall we call you?" autoFocus onChange={(e) => setName(e.target.value)} value={name}
+            className=" font-bold focus:outline-none"/>
+          <button className="p-2 -m-2 " onClick={saveName}>
+            <CheckIcon className="h-5 w-5 sm:h-6 sm:w-6"/>
+          </button>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
